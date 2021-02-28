@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { INTERVAL, PollingConfig, PollingService } from './polling.service';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { PollingComponent } from './polling.component';
 
 @NgModule({
@@ -6,4 +7,17 @@ import { PollingComponent } from './polling.component';
   imports: [],
   exports: [PollingComponent],
 })
-export class PollingModule {}
+export class PollingModule {
+  static withConfig(config?: PollingConfig) {
+    return {
+      ngModule: PollingModule,
+      providers: [
+        PollingService,
+        {
+          provide: INTERVAL,
+          useValue: config?.interval || 1000,
+        },
+      ],
+    };
+  }
+}
